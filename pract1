@@ -1,0 +1,88 @@
+import pathlib as pt
+
+
+class CLI:
+    def __init__(self):
+        self.running = True
+        self.current_directory = pt.Path('C:/Users/user/Desktop/conf_ypr')
+        self.virtual_cwd = "myvfs$"
+        self.commands = {
+            'exit': self.com_exit,
+            'help': self.com_help,
+            'pwd': self.com_pwd,
+            'ls': self.com_ls,
+            'cd': self.com_cd,
+            'echo': self.com_echo,
+            'clear': self.com_clear
+        }
+
+    def greetings(self):
+        print("Hi! This is my Shell Emulator")
+        print("Type 'help' for available commands")
+        print("Type 'exit' to quit\n")
+
+    def com_help(self):
+        print("Available commands:")
+        print("  exit      - terminate shell")
+        print("  help      - show this help")
+        print("  pwd       - show current directory")
+        print("  ls [dir]  - list directory contents")
+        print("  cd [dir]  - change directory")
+        print("  echo [text] - print text")
+        print("  clear     - clear screen")
+
+    def com_cd(self, args):
+        print("cd", args)
+        return ""
+
+    def com_ls(self, args):
+        print("ls", args)
+        return ""
+
+    def com_pwd(self, args):
+        print("pwd", args)
+        return ""
+
+    def com_clear(self, args):
+        print("clear", args)
+        return ""
+    def com_echo(self, args):
+        print("echo", args)
+        return ""
+
+    def com_exit(self):
+        return 0
+
+    def display(self):
+        return f"{self.virtual_cwd}::{self.current_directory.name}> "
+
+    def main(self):
+        print(self.display(), end = "")
+        com_args = input().split()
+        cmd = com_args[0]
+        args = com_args[1:]
+        if cmd not in self.commands.keys():
+            print("Unknown command")
+            return 0
+        else:
+            if cmd == "cd":
+                return self.com_cd(args)
+            elif cmd == "help":
+                return self.com_help()
+            elif cmd == "pwd":
+                return self.com_pwd(args)
+            elif cmd == "ls":
+                return self.com_ls(args)
+            elif cmd == "exit":
+                return self.com_exit()
+            elif cmd == "echo":
+                return self.com_echo(args)
+            elif cmd == "clear":
+                return self.com_clear(args)
+        print(com_args)
+        return 1
+
+
+c = CLI()
+c.greetings()
+c.main()
