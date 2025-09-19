@@ -33,54 +33,51 @@ class CLI:
 
     def com_cd(self, args):
         print("cd", args)
-        return ""
+        return
 
     def com_ls(self, args):
         print("ls", args)
-        return ""
+        return
 
     def com_pwd(self, args):
         print("pwd", args)
-        return ""
+        return
 
     def com_clear(self, args):
         print("clear", args)
-        return ""
+        return
+
     def com_echo(self, args):
         print("echo", args)
-        return ""
+        return
 
     def com_exit(self):
+        self.running = False
         return 0
 
     def display(self):
         return f"{self.virtual_cwd}::{self.current_directory.name}> "
 
     def main(self):
-        print(self.display(), end = "")
-        com_args = input().split()
-        cmd = com_args[0]
-        args = com_args[1:]
-        if cmd not in self.commands.keys():
-            print("Unknown command")
-            return 0
-        else:
-            if cmd == "cd":
-                return self.com_cd(args)
-            elif cmd == "help":
-                return self.com_help()
-            elif cmd == "pwd":
-                return self.com_pwd(args)
-            elif cmd == "ls":
-                return self.com_ls(args)
-            elif cmd == "exit":
-                return self.com_exit()
-            elif cmd == "echo":
-                return self.com_echo(args)
-            elif cmd == "clear":
-                return self.com_clear(args)
-        print(com_args)
-        return 1
+        while self.running:
+            print(self.display(), end="")
+            user_input = input().strip()
+
+            if not user_input:
+                continue
+
+            com_args = user_input.split()
+            cmd = com_args[0]
+            args = com_args[1:]
+
+            if cmd not in self.commands:
+                print("Unknown command")
+                continue
+
+            if cmd == "exit":
+                self.commands[cmd]()
+            else:
+                self.commands[cmd](args)
 
 
 c = CLI()
