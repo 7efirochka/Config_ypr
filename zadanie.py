@@ -1,6 +1,5 @@
 import pathlib as pt
 
-
 class CLI:
     def __init__(self):
         self.running = True
@@ -31,13 +30,35 @@ class CLI:
         print("  echo [text] - print text")
         print("  clear     - clear screen")
 
-    def com_cd(self, args):
-        print("cd", args)
-        return
+    def com_cd(self, target):
+        if target == "..":
+            if self.current_directory != self.current_directory.parent:
+                self.current_directory = self.current_directory.parent
+            return self.current_directory
+
+        new_path = self.current_directory / target
+        resolved_path = new_path.resolve()
+
+        if not resolved_path.exists():
+            print(f"No such directory: {target}")
+
+        self.current_directory = resolved_path
+        return self.current_directory
 
     def com_ls(self, args):
-        print("ls", args)
-        return
+        if args:
+            target_dir = self.current_directory / args[0]
+        else:
+            target_dir = self.current_directory
+
+        if not target_dir.exists():
+            print(f"No such directory: {args}")
+        target_dir = target_dir.resolve()
+
+        for item in target_dir.iterdir():
+            print(item.name)
+
+
 
     def com_pwd(self, args):
         print("pwd", args)
@@ -48,7 +69,7 @@ class CLI:
         return
 
     def com_echo(self, args):
-        print("echo", args)
+        print(*args)
         return
 
     def com_exit(self):
